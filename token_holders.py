@@ -33,7 +33,7 @@ def get_token_transactions(token_address, api):
     start_block = 0
     end_block = last_eth_block(api)
     sort = 'asc'
-    sleep_time = 0.5
+    sleep_time = 0.2
     token_df = pd.DataFrame()
     cont = True
     while cont is True:
@@ -57,7 +57,7 @@ def get_token_holder_data(token_address, api_key):
     Sort and rearrange the transaction data to get current holders and create output dataframe
     """
     print('--------------------------------------------------')
-    print('Updating...')
+    print('Updating token data for {}...'.format(token_address))
 
     df = get_token_transactions(token_address, api_key)
 
@@ -97,5 +97,7 @@ def get_token_holder_data(token_address, api_key):
 etherscan_api_key = os.getenv('ETHERSCAN_KEY')
 
 floki = "0x43f11c02439e2736800433b4594994Bd43Cd066D"
+leash = "0x27C70Cd1946795B66be9d954418546998b546634"
+akitainu = "0x3301ee63fb29f863f2333bd4466acb46cd8323e6"
 
 get_token_holder_data(floki, etherscan_api_key)
