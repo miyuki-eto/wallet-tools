@@ -33,10 +33,11 @@ def get_token_transactions(token_address, api):
     start_block = 0
     end_block = last_eth_block(api)
     sort = 'asc'
-    sleep_time = 0.2
+    sleep_time = 0.25
     token_df = pd.DataFrame()
     cont = True
     while cont is True:
+        print(start_block)
         url = 'https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=' + token_address + \
               '&startblock=' + str(start_block) + '&endblock=' + str(end_block) + '&sort=' + sort + '&apikey=' + api
         json_data = requests.get(url).json()
@@ -52,7 +53,7 @@ def get_token_transactions(token_address, api):
     return token_df
 
 
-def get_token_holder_data(token_address, api_key):
+def get_token_holder_data(token_address, api_key, output_filename):
     """
     Sort and rearrange the transaction data to get current holders and create output dataframe
     """
@@ -86,18 +87,18 @@ def get_token_holder_data(token_address, api_key):
     data.sort_values(['datetime', 'sort'], inplace=True, ascending=[True, True])
     data.reset_index(drop=True, inplace=True)
 
-    data.to_csv('data/' + token_address + '_token_holders.csv')
+    data.to_csv(output_filename)
 
-    print(token_address + '_token_holders.csv updated')
+    print(output_filename + ' updated')
     print('--------------------------------------------------')
     print('')
 
-
-# API keys
-etherscan_api_key = os.getenv('ETHERSCAN_KEY')
-
-floki = "0x43f11c02439e2736800433b4594994Bd43Cd066D"
-leash = "0x27C70Cd1946795B66be9d954418546998b546634"
-akitainu = "0x3301ee63fb29f863f2333bd4466acb46cd8323e6"
-
-get_token_holder_data(floki, etherscan_api_key)
+#
+# # API keys
+# etherscan_api_key = os.getenv('ETHERSCAN_KEY')
+#
+# floki = "0x43f11c02439e2736800433b4594994Bd43Cd066D"
+# leash = "0x27C70Cd1946795B66be9d954418546998b546634"
+# akitainu = "0x3301ee63fb29f863f2333bd4466acb46cd8323e6"
+#
+# get_token_holder_data(floki, etherscan_api_key)

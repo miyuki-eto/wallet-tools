@@ -1,0 +1,9 @@
+{
+  "TOKEN_NAME": {
+    "address": "TOKEN CONTRACT ADDRESS",
+    "start": "YYYY-MM-DD hh:mm",
+    "end": "YYYY-MM-DD hh:mm",
+    "min": 500000000,
+    "chain": "eth"
+  }
+}
