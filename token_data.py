@@ -26,18 +26,18 @@ def last_eth_block(api_key):
     return requests.get("https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=" + api_key).json()['result']
 
 
-def get_token_transactions(token_address, api):
+def get_token_transactions(token_address, api, start_block_in, end_block_in):
     """
     Get all transactions for a given token using Etherscan and return a dataframe
     """
-    start_block = 0
-    end_block = last_eth_block(api)
+    start_block = start_block_in
+    end_block = end_block_in
     sort = 'asc'
     sleep_time = 0.25
     token_df = pd.DataFrame()
     cont = True
     while cont is True:
-        print(start_block)
+        # print(start_block)
         url = 'https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=' + token_address + \
               '&startblock=' + str(start_block) + '&endblock=' + str(end_block) + '&sort=' + sort + '&apikey=' + api
         json_data = requests.get(url).json()
@@ -53,15 +53,15 @@ def get_token_transactions(token_address, api):
     return token_df
 
 
-def get_token_holder_data(token_address, api_key, output_filename):
+def get_token_holder_data(token_address, api_key, output_filename, start, end):
     """
     Sort and rearrange the transaction data to get current holders and create output dataframe
     """
     print('--------------------------------------------------')
     print('Updating token data for {}...'.format(token_address))
 
-    df = get_token_transactions(token_address, api_key)
-
+    df = get_token_transactions(token_address, api_key, start, end)
+    # print(df)
     df.sort_values(['timeStamp'], inplace=True, ascending=[True])
     df.reset_index(drop=True, inplace=True)
 
